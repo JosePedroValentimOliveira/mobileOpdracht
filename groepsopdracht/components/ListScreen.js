@@ -39,7 +39,7 @@ const List = ({navigation})=>{
         apiCall().then(data=>{
             let namen = [];
             data.features.forEach(element => {
-                namen.push(element.attributes);
+              namen.push(element.attributes);
             });
             
             setData(namen);
@@ -60,7 +60,7 @@ const List = ({navigation})=>{
         {key: "niveau" ,value:item.niveau},
         {key: "planning" ,value:item.planning},
         {key: "GISID" ,value:item.GISID},
-        {key: "reistijd" ,value:item.reistijd_antw}        
+        {key: "reistijd_antw" ,value:item.reistijd_antw}        
       ]
       return(
         <TouchableHighlight onPress={()=>{navigation.navigate('Detail',{station:details})}} >
