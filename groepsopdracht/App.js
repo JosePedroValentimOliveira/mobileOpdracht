@@ -48,12 +48,6 @@ const styles = StyleSheet.create({
   }
 });
 
-
-//API testing
-// API Call
-
-
-
  
 
   
