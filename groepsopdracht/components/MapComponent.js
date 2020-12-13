@@ -67,6 +67,7 @@ export default ({navigation})=>{
         location &&
         <View style={styles.container}>
              <MapView style={styles.mapStyle} initialRegion={{latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.04, longitudeDelta:0.1}}>
+             <Marker coordinate={{latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.04, longitudeDelta:0.1}}></Marker>
              {markers.map((marker, index) => (
                     <Marker onPress={()=>{ 
                       setPopup(true);
