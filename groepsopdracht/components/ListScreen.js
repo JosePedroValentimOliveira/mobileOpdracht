@@ -7,7 +7,7 @@ import { ActivityIndicator} from 'react-native-paper';
 import apiCall from '../assets/js/apiCall';
 import Detail from './DetailScreen';
 import CameraScreen from './CameraScreen';
-
+import {colors} from '../assets/js/colors';
 
 
 
@@ -38,9 +38,9 @@ const List = ({navigation})=>{
     
       return(
         <TouchableHighlight onPress={()=>{navigation.navigate('Detail',{station:item})}} >
-          <View style={{borderWidth:2,borderColor:"black",padding:15,margin:2}}>
-            <Text style={{fontWeight:"bold"}}>{item.naam}</Text>
-            <Text>{status}</Text>
+          <View style={styles.itemContainer}>
+            <Text style={{fontWeight:"bold",color:colors.secondary}}>{item.naam}</Text>
+            <Text style={{color:colors.grey}}>{status}</Text>
           </View>
         </TouchableHighlight>
         )
@@ -50,37 +50,35 @@ const List = ({navigation})=>{
 
     return(
       <View style={styles.container}>
-        {loading?<ActivityIndicator size="large" color="#0000ff"/>:<FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}/>}
-        
-        
+        {loading?<ActivityIndicator size="large" color={colors.primary}/>:<FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor}/>}
       </View>
     )
-
 }
 
 const Stack = createStackNavigator();
+const options ={headerStyle:{backgroundColor:colors.primary},headerTintColor:colors.secondary};
 
 export default()=>{
   return(
   
     <Stack.Navigator>
-      <Stack.Screen name="Stations" component={List}/>
-      <Stack.Screen name="Detail" component={Detail}/>
-      <Stack.Screen name="Camera" component={CameraScreen}/>
+      <Stack.Screen name="Stations" component={List} options={options}/>
+      <Stack.Screen name="Detail" component={Detail} options={options}/>
+      <Stack.Screen name="Camera" component={CameraScreen} options={options}/>
     </Stack.Navigator>
     
   )
 }
 
 const styles = StyleSheet.create({
-  generic:{
-    flex:1,alignItems:"center",justifyContent:"center"
-  },container: {
-        margin:10,
+    container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'stretch',
         justifyContent: 'center',
         padding:10
-      },
+    },
+    itemContainer:{
+      borderWidth:2,borderColor:colors.primary,padding:15,margin:2,backgroundColor:colors.primary,borderRadius:10
+    }
   });

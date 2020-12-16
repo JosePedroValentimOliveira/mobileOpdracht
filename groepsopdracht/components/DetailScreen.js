@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, View,Button,Image,ScrollView  } from 'react-native';
+import { StyleSheet, Text, View,Button,Image,ScrollView,ImageBackground,TouchableOpacity  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { colors } from '../assets/js/colors';
+
 
 
 
@@ -53,7 +55,6 @@ export default ({route,navigation})=>{
                 setData(false);
             }
             else{setData(true);setButtonText("Verwijder uit favorieten")}
-
         })()
         navigation.addListener('focus',()=>{
             getImage();
@@ -63,23 +64,24 @@ export default ({route,navigation})=>{
 
      
     return(
+        
         <View style={styles.container} >
-            {image == null ?<View/>:<Image style={styles.image} source={{uri:image}}/>}
+            <ImageBackground style={styles.backgroundImage} source={{uri:image}}>
             
-          <ScrollView>
-        
-        <Text style={ {fontSize:20,color:'black'}}>{station.naam}</Text>
-        {
-            Object.keys(station).map((key,i)=>(
-                <View key={i} style={{padding:2,margin:1}}>
-                    <Text style={{fontWeight:"bold"}}>{key.charAt(0).toUpperCase() + key.slice(1)}:</Text>
-                    <Text>{station[key]}</Text>
+            <View style={styles.innerContainer}>
+            <ScrollView>
+                <View style={{backgroundColor:colors.primary,borderRadius:10,padding:15,opacity:0.8}}>
+                <Text style={{...styles.boldText, fontSize:20}}>{station.naam}</Text>
+                {Object.keys(station).map((key,i)=>(
+                    <View key={i} style={{padding:2,margin:1}}>
+                        <Text style={styles.boldText}>{key.charAt(0).toUpperCase() + key.slice(1)}:</Text>
+                        <Text style={{color:colors.grey}}>{station[key]}</Text>
+                    </View>
+                ))}
                 </View>
-        ))
-        }
-        <Text>{data}</Text>
-        
-        <Button title={buttonText} onPress={async()=>{
+            </ScrollView>
+            </View>
+            <TouchableOpacity style={styles.buttonFav} onPress={async()=>{
                 if(data){
                     removeFavorite();
                     setData(false);
@@ -92,29 +94,39 @@ export default ({route,navigation})=>{
                     setButtonText("Verwijder uit favorieten");
                     await getFavorite()
                 }
-            } 
-        }/>
-        <Button title="Neem een foto" onPress={()=>{
-            navigation.navigate("Camera",{id:station.GISID});
-        }}/>
-       </ScrollView>
+            } }>
+                <Text style={{color:colors.secondary}}>{buttonText}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonCam} onPress={()=>{navigation.navigate("Camera",{id:station.GISID});}}>
+                <Text style={{color:colors.secondary}}>Neem een foto</Text>
+            </TouchableOpacity>
+       </ImageBackground> 
       </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-    generic:{
-      flex:1,alignItems:"center",justifyContent:"center"
-    },container: {
-          margin:10,
+    container: {
           flex: 1,
           backgroundColor: '#fff',
           alignItems: 'stretch',
           justifyContent: 'center',
-          padding:10
-        },
-        image:{
-            height:200,
-        }
+         
+    },
+    innerContainer: {
+            flex: 1,
+            alignItems: 'stretch',
+            justifyContent: 'center',
+            padding:30
+           
+    },
+    backgroundImage: {
+            flex: 1,
+            resizeMode: "cover",
+            justifyContent: "center"
+    },
+    buttonCam:{backgroundColor:colors.primary,borderRadius:5,padding:10,alignItems:'center',position:"absolute",bottom:0,alignSelf:'center',width:"80%",margin:20},
+    buttonFav:{backgroundColor:colors.primary,borderRadius:5,padding:10,alignItems:'center',position:"absolute",bottom:50,alignSelf:'center',width:"80%",margin:20},
+    boldText:{color:colors.secondary,fontWeight:'bold'}
     });
